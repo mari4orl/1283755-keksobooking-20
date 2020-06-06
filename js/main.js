@@ -12,7 +12,6 @@ var times = ['12:00', '13:00', '14:00'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 var pinList = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin')
@@ -67,8 +66,6 @@ function findNearestAd(number) {
   return nearestAds;
 }
 
-var nearestAds = findNearestAd(adsNumber);
-
 function renderPin(ad) {
   var adElement = pinTemplate.cloneNode(true);
 
@@ -87,5 +84,9 @@ function renderPins(adsArray, destination) {
   }
   destination.appendChild(fragment);
 }
+
+map.classList.remove('map--faded');
+
+var nearestAds = findNearestAd(adsNumber);
 
 renderPins(nearestAds, pinList);
