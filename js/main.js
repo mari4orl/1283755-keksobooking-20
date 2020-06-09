@@ -88,12 +88,6 @@ function renderPins(adsArray, destination) {
   destination.appendChild(fragment);
 }
 
-map.classList.remove('map--faded');
-
-var nearestAds = findNearestAd(adsNumber);
-
-renderPins(nearestAds, pinList);
-
 function renderCard(ad) {
   var cardElement = cardTemplate.cloneNode(true);
 
@@ -101,23 +95,35 @@ function renderCard(ad) {
   cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
   cardElement.querySelector('.popup__text--price')
   .textContent = ad.offer.price + '₽/ночь';
-  if (ad.offer.type === 'flat') {
-    cardElement.querySelector('.popup__type ').textContent = 'Квартира';
-  } else if (ad.offer.type === 'bungalo') {
-    cardElement.querySelector('.popup__type ').textContent = 'Бунгало';
-  } else if (ad.offer.type === 'house') {
-    cardElement.querySelector('.popup__type ').textContent = 'Дом';
-  } else {
-    cardElement.querySelector('.popup__type ').textContent = 'Дворец';
+
+  var popupType = cardElement.querySelector('.popup__type');
+  switch (ad.offer.type) {
+    case 'flat':
+      popupType.textContent = 'Квартира';
+      break;
+    case 'bungalo':
+      popupType.textContent = 'Бунгало';
+      break;
+    case 'house':
+      popupType.textContent = 'Дом';
+      break;
+    default:
+      popupType.textContent = 'Дворец';
   }
-  cardElement.querySelector('.popup__text--capacity')
-  .textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
+  var popupCapacity = cardElement.querySelector('.popup__text--capacity');
+  popupCapacity.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
 
-  cardElement.querySelector('.popup__text--time')
-  .textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  var popupTime = cardElement.querySelector('.popup__text--time');
+  popupTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
-  cardElement.querySelector('.popup__features').textContent = ad.offer.features;
+  var featuresHTML = [];
+  for (var j = 0; j < ad.offer.features.length; j++) {
+    featuresHTML[j] = '<li class="popup__feature popup__feature--' + ad.offer.features[j] + '"></li>';
+  }
+  cardElement.querySelector('.popup__features').innerHTML = featuresHTML.join('');
+
   cardElement.querySelector('.popup__description').textContent = ad.offer.description;
+
   var photosList = cardElement.querySelector('.popup__photos');
   var photo = photosList.querySelector('img');
   for (var i = 0; i < ad.offer.photos.length; i++) {
@@ -132,12 +138,17 @@ function renderCard(ad) {
   return cardElement;
 }
 
-
 function renderCards(adsArray, destination) {
   var fragment = document.createDocumentFragment();
 
   fragment.appendChild(renderCard(adsArray[1]));
   destination.insertBefore(fragment, filtersContainer);
 }
+
+map.classList.remove('map--faded');
+
+var nearestAds = findNearestAd(adsNumber);
+
+renderPins(nearestAds, pinList);
 
 renderCards(nearestAds, map);
