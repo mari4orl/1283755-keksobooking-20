@@ -5,12 +5,20 @@ var MAP_Y_1 = 130;
 var MAP_Y_2 = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_SIZE = 62;
+var PIN_ARROW_HEIGHT = 22;
 var adsNumber = 8;
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
 var times = ['12:00', '13:00', '14:00'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var guestsRoomsMap = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
 var map = document.querySelector('.map');
 
 var pinList = document.querySelector('.map__pins');
@@ -20,6 +28,16 @@ var pinTemplate = document.querySelector('#pin')
 
 var filtersContainer = document.querySelector('.map__filters-container');
 var cardTemplate = document.querySelector('#card').content;
+
+var mapPinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var fieldsets = adForm.querySelectorAll('fieldset');
+var inputAddress = document.querySelector('#address');
+var roomNumber = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
+
+var mapPinMainX = parseInt(mapPinMain.style.left, 10);
+var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -90,13 +108,17 @@ function renderPins(adsArray, destination) {
 
 function renderCard(ad) {
   var cardElement = cardTemplate.cloneNode(true);
+  var popupCapacity = cardElement.querySelector('.popup__text--capacity');
+  var popupTime = cardElement.querySelector('.popup__text--time');
+  var popupType = cardElement.querySelector('.popup__type');
+  var photosList = cardElement.querySelector('.popup__photos');
+  var photo = photosList.querySelector('img');
 
   cardElement.querySelector('.popup__title').textContent = ad.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
   cardElement.querySelector('.popup__text--price')
   .textContent = ad.offer.price + '₽/ночь';
 
-  var popupType = cardElement.querySelector('.popup__type');
   switch (ad.offer.type) {
     case 'flat':
       popupType.textContent = 'Квартира';
@@ -107,13 +129,12 @@ function renderCard(ad) {
     case 'house':
       popupType.textContent = 'Дом';
       break;
-    default:
+    case 'palace':
       popupType.textContent = 'Дворец';
+      break;
   }
-  var popupCapacity = cardElement.querySelector('.popup__text--capacity');
   popupCapacity.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
 
-  var popupTime = cardElement.querySelector('.popup__text--time');
   popupTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
   var featuresHTML = [];
@@ -124,8 +145,6 @@ function renderCard(ad) {
 
   cardElement.querySelector('.popup__description').textContent = ad.offer.description;
 
-  var photosList = cardElement.querySelector('.popup__photos');
-  var photo = photosList.querySelector('img');
   for (var i = 0; i < ad.offer.photos.length; i++) {
     var photoElem = photo.cloneNode('true');
     photoElem.src = ad.offer.photos[i];
@@ -145,8 +164,41 @@ function renderCards(adsArray, destination) {
   destination.insertBefore(fragment, filtersContainer);
 }
 
-map.classList.remove('map--faded');
+for (var i = 0; i < fieldsets.length; i++) {
+  fieldsets[i].setAttribute('disabled', 'disabled');
+}
 
+function checkGuestRoomMatch(evt) {
+  var currentRooms = roomNumber.value;
+  var currentGuests = parseInt(capacity.value, 10);
+  if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
+    evt.target.setCustomValidity('Выберите другое количество комнат или гостей');
+  }
+}
+
+function makeActive() {
+  for (var j = 0; j < fieldsets.length; j++) {
+    fieldsets[j].removeAttribute('disabled', 'disabled');
+  }
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  roomNumber.addEventListener('change', checkGuestRoomMatch);
+  capacity.addEventListener('change', checkGuestRoomMatch);
+}
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    makeActive();
+  }
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    makeActive();
+  }
+});
+
+inputAddress.value = Math.round(mapPinMainX + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMainY + MAIN_PIN_SIZE + PIN_ARROW_HEIGHT);
 var nearestAds = findNearestAd(adsNumber);
 
 renderPins(nearestAds, pinList);
