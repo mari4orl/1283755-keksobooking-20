@@ -11,7 +11,6 @@ var inputAddress = document.querySelector('#address');
 var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 var MAIN_PIN_SIZE = 62;
-var PIN_ARROW_HEIGHT = 22;
 
 function makeActive() {
   var nearestAds = window.data.findNearestAd(adsNumber);

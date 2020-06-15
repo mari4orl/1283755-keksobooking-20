@@ -1,6 +1,9 @@
 'use strict';
 window.move = (function () {
   var mapPinMain = document.querySelector('.map__pin--main');
+  var PIN_ARROW_HEIGHT = 22;
+  var MAIN_PIN_SIZE = 62;
+  var inputAddress = document.querySelector('#address');
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -25,7 +28,7 @@ window.move = (function () {
 
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-      inputAddress.value = Math.round(parseInt(mapPinMain.style.left) + MAIN_PIN_SIZE / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top) + MAIN_PIN_SIZE + PIN_ARROW_HEIGHT);
+      inputAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_SIZE / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_SIZE + PIN_ARROW_HEIGHT);
 
     };
 
