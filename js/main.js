@@ -21,7 +21,6 @@ function makeActive() {
   adForm.classList.remove('ad-form--disabled');
   roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
-  inputAddress.value = Math.round(mapPinMainX + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMainY + MAIN_PIN_SIZE + PIN_ARROW_HEIGHT);
   window.pin.renderPins(nearestAds, pinList);
   window.card.renderCards(nearestAds, map);
 }
