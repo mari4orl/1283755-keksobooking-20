@@ -22,19 +22,24 @@ function makeActive() {
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
   window.pin.renderPins(nearestAds, pinList);
   window.card.renderCards(nearestAds, map);
+  mapPinMain.removeEventListener('mousedown', makeActiveByMouse);
+  mapPinMain.removeEventListener('keydown', makeActiveByBtn);
 }
 
-mapPinMain.addEventListener('mousedown', function (evt) {
+function makeActiveByMouse(evt) {
   if (evt.button === 0) {
     makeActive();
   }
-});
+}
 
-mapPinMain.addEventListener('keydown', function (evt) {
+function makeActiveByBtn(evt) {
   if (evt.key === 'Enter') {
     makeActive();
   }
-});
+}
+
+mapPinMain.addEventListener('mousedown', makeActiveByMouse);
+mapPinMain.addEventListener('keydown', makeActiveByBtn);
 
 window.form.toggleFieldsetAvailability(true);
 
