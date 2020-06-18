@@ -12,8 +12,8 @@ var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 var MAIN_PIN_SIZE = 62;
 
+
 function makeActive() {
-  var nearestAds = window.data.findNearestAd(adsNumber);
 
   window.form.toggleFieldsetAvailability(false);
   map.classList.remove('map--faded');
@@ -21,25 +21,25 @@ function makeActive() {
   roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
   window.pin.renderPins(nearestAds, pinList);
-  window.card.renderCards(nearestAds, map);
+  window.card.onSuccess();
   mapPinMain.removeEventListener('mousedown', makeActiveByMouse);
   mapPinMain.removeEventListener('keydown', makeActiveByBtn);
 }
 
-function makeActiveByMouse(evt) {
+function onLeftBtnMouseClick(evt) {
   if (evt.button === 0) {
     makeActive();
   }
 }
 
-function makeActiveByBtn(evt) {
+function onEnterPress(evt) {
   if (evt.key === 'Enter') {
     makeActive();
   }
 }
 
-mapPinMain.addEventListener('mousedown', makeActiveByMouse);
-mapPinMain.addEventListener('keydown', makeActiveByBtn);
+mapPinMain.addEventListener('mousedown', onLeftBtnMouseClick);
+mapPinMain.addEventListener('keydown', onEnterPress);
 
 window.form.toggleFieldsetAvailability(true);
 

@@ -10,6 +10,8 @@ window.card = (function () {
     var popupType = cardElement.querySelector('.popup__type');
     var photosList = cardElement.querySelector('.popup__photos');
     var photo = photosList.querySelector('img');
+    var map = document.querySelector('.map');
+
 
     cardElement.querySelector('.popup__title').textContent = ad.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
@@ -53,12 +55,20 @@ window.card = (function () {
 
     return cardElement;
   }
+  window.load('https://javascript.pages.academy/keksobooking/data', onSuccess, onError);
   return {
-    renderCards: function (adsArray, destination) {
+    // renderCards: function (adsArray, destination) {
+    // }
+
+    onError: function (message) {
+      console.error(message);
+    },
+
+    onSuccess: function (data) {
       var fragment = document.createDocumentFragment();
 
-      fragment.appendChild(renderCard(adsArray[1]));
-      destination.insertBefore(fragment, filtersContainer);
-    }
+      fragment.appendChild(renderCard(data[1]));
+      map.insertBefore(fragment, filtersContainer);
+    },
   };
 })();
