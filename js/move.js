@@ -9,18 +9,18 @@ window.move = (function () {
   var MAX_BOTTOM = 546;
   var inputAddress = document.querySelector('#address');
 
-  function calcCoordinates() {
+  function calculateCoordinates() {
     inputAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_SIZE / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_SIZE + PIN_ARROW_HEIGHT);
   }
 
   mapPinMain.addEventListener('keydown', function (evt) {
     evt.preventDefault();
-    calcCoordinates();
+    calculateCoordinates();
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    calcCoordinates();
+    calculateCoordinates();
 
     var startCoords = {
       x: evt.clientX,
@@ -44,7 +44,7 @@ window.move = (function () {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
       }
-      calcCoordinates();
+      calculateCoordinates();
     };
 
     var onMouseUp = function (upEvt) {

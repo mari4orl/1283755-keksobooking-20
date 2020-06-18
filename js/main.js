@@ -1,5 +1,4 @@
 'use strict';
-var adsNumber = 8;
 
 var map = document.querySelector('.map');
 var pinList = document.querySelector('.map__pins');
@@ -12,34 +11,51 @@ var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 var MAIN_PIN_SIZE = 62;
 
+
 function makeActive() {
-  var nearestAds = window.data.findNearestAd(adsNumber);
 
   window.form.toggleFieldsetAvailability(false);
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
   roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
-  window.pin.renderPins(nearestAds, pinList);
-  window.card.renderCards(nearestAds, map);
-  mapPinMain.removeEventListener('mousedown', makeActiveByMouse);
-  mapPinMain.removeEventListener('keydown', makeActiveByBtn);
+  // window.card.renderCards(nearestAds, map);
+  window.backend.load('https://javascript.pages.academy/keksobooking/data', onSuccess, onError);
+
+  function onError(errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  }
+
+  function onSuccess(data) {
+    window.pin.renderPins(data, pinList);
+  }
+
+  mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
+  mapPinMain.removeEventListener('keydown', onEnterPress);
 }
 
-function makeActiveByMouse(evt) {
+function onLeftBtnMouseClick(evt) {
   if (evt.button === 0) {
     makeActive();
   }
 }
 
-function makeActiveByBtn(evt) {
+function onEnterPress(evt) {
   if (evt.key === 'Enter') {
     makeActive();
   }
 }
 
-mapPinMain.addEventListener('mousedown', makeActiveByMouse);
-mapPinMain.addEventListener('keydown', makeActiveByBtn);
+mapPinMain.addEventListener('mousedown', onLeftBtnMouseClick);
+mapPinMain.addEventListener('keydown', onEnterPress);
 
 window.form.toggleFieldsetAvailability(true);
 
