@@ -44,7 +44,7 @@ window.move = (function () {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
       }
-      calcCoordinates();
+      calculateCoordinates();
     };
 
     var onMouseUp = function (upEvt) {

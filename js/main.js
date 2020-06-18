@@ -1,5 +1,4 @@
 'use strict';
-var adsNumber = 8;
 
 var map = document.querySelector('.map');
 var pinList = document.querySelector('.map__pins');
@@ -20,10 +19,27 @@ function makeActive() {
   adForm.classList.remove('ad-form--disabled');
   roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
-  window.pin.renderPins(nearestAds, pinList);
-  window.card.onSuccess();
-  mapPinMain.removeEventListener('mousedown', makeActiveByMouse);
-  mapPinMain.removeEventListener('keydown', makeActiveByBtn);
+  // window.card.renderCards(nearestAds, map);
+  window.backend.load('https://javascript.pages.academy/keksobooking/data', onSuccess, onError);
+
+  function onError(errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  }
+
+  function onSuccess(data) {
+    window.pin.renderPins(data, pinList);
+  }
+
+  mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
+  mapPinMain.removeEventListener('keydown', onEnterPress);
 }
 
 function onLeftBtnMouseClick(evt) {
