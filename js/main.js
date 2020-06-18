@@ -11,6 +11,21 @@ var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 var MAIN_PIN_SIZE = 62;
 
+function onError(errorMessage) {
+  var node = document.createElement('div');
+  node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
+  node.style.position = 'absolute';
+  node.style.left = 0;
+  node.style.right = 0;
+  node.style.fontSize = '30px';
+
+  node.textContent = errorMessage;
+  document.body.insertAdjacentElement('afterbegin', node);
+}
+
+function onSuccess(data) {
+  window.pin.renderPins(data, pinList);
+}
 
 function makeActive() {
 
@@ -20,23 +35,7 @@ function makeActive() {
   roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
   // window.card.renderCards(nearestAds, map);
-  window.backend.load('https://javascript.pages.academy/keksobooking/data', onSuccess, onError);
-
-  function onError(errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  }
-
-  function onSuccess(data) {
-    window.pin.renderPins(data, pinList);
-  }
+  window.backend.load(onSuccess, onError);
 
   mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
   mapPinMain.removeEventListener('keydown', onEnterPress);
