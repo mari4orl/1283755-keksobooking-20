@@ -6,10 +6,14 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
+var type = document.querySelector('#type');
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
 var inputAddress = document.querySelector('#address');
 var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 var MAIN_PIN_SIZE = 62;
+
 
 function onError(errorMessage) {
   var node = document.createElement('div');
@@ -34,7 +38,10 @@ function makeActive() {
   adForm.classList.remove('ad-form--disabled');
   roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
-  // window.card.renderCards(nearestAds, map);
+  type.addEventListener('change', window.form.onChangeMinPrice);
+  timeIn.addEventListener('change', window.form.onChangeTimeIn);
+  timeOut.addEventListener('change', window.form.onChangeTimeIn);
+
   window.backend.load(onSuccess, onError);
 
   mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);

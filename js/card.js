@@ -2,6 +2,8 @@
 window.card = (function () {
   var cardTemplate = document.querySelector('#card').content;
   var filtersContainer = document.querySelector('.map__filters-container');
+  var map = document.querySelector('.map');
+
 
   function renderCard(ad) {
     var cardElement = cardTemplate.cloneNode(true);
@@ -54,11 +56,8 @@ window.card = (function () {
     return cardElement;
   }
   return {
-    renderCards: function (adsArray, destination) {
-      var fragment = document.createDocumentFragment();
-
-      fragment.appendChild(renderCard(adsArray[1]));
-      destination.insertBefore(fragment, filtersContainer);
+    renderCards: function (ad, destination) {
+      destination.insertBefore(renderCard(ad), filtersContainer);
     }
   };
 })();

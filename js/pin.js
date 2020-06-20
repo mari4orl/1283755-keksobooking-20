@@ -17,11 +17,21 @@ window.pin = (function () {
     return adElement;
   }
 
+
   return {
     renderPins: function (adsArray, destination) {
       var fragment = document.createDocumentFragment();
+
+      function onPinClick(ad) {
+        pin.addEventListener('click', function () {
+          window.card.renderCards(ad, map)
+        });
+      }
+
       for (var i = 0; i < adsArray.length; i++) {
-        fragment.appendChild(renderPin(adsArray[i]));
+        var pin = renderPin(adsArray[i]);
+        fragment.appendChild(pin);
+        onPinClick(adsArray[i]);
       }
       destination.appendChild(fragment);
     }
