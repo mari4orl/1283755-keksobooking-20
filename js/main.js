@@ -40,7 +40,7 @@ function makeActive() {
   capacity.addEventListener('change', window.form.checkGuestRoomMatch);
   type.addEventListener('change', window.form.onChangeMinPrice);
   timeIn.addEventListener('change', window.form.onChangeTimeIn);
-  timeOut.addEventListener('change', window.form.onChangeTimeIn);
+  timeOut.addEventListener('change', window.form.onChangeTimeOut);
 
   window.backend.load(onSuccess, onError);
 

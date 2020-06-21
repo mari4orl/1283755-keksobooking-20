@@ -65,16 +65,20 @@ window.form = (function () {
       }
     },
 
+    // onChangeTimeIn: function () {
+    //   if (timeIn.value != timeOut.value) {
+    //     timeIn.setCustomValidity('Время заезда и выезда должны совпадать');
+    //   } else {
+    //     timeIn.setCustomValidity('');
+    //   }
+    // },
+
     onChangeTimeIn: function () {
-      if (timeIn.value != timeOut.value) {
-        timeIn.setCustomValidity('Время заезда и выезда должны совпадать');
-      } else {
-        timeIn.setCustomValidity('');
-      }
+      timeOut.value = timeIn.value;
     },
-    //
-    // onChangeTimeOut: function () {
-    //   timeOut.value = timeIn.value;
-    // }
+
+    onChangeTimeOut: function () {
+      timeIn.value = timeOut.value;
+    }
   };
 })();

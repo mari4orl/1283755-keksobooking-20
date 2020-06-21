@@ -2,8 +2,6 @@
 window.card = (function () {
   var cardTemplate = document.querySelector('#card').content;
   var filtersContainer = document.querySelector('.map__filters-container');
-  var map = document.querySelector('.map');
-
 
   function renderCard(ad) {
     var cardElement = cardTemplate.cloneNode(true);
@@ -55,9 +53,27 @@ window.card = (function () {
 
     return cardElement;
   }
+
+  function removeArticle() {
+    var card = document.querySelector('article');
+    if (card) {
+      card.remove();
+    }
+  }
+
+  function onPopupEscPress(evt) {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      removeArticle();
+    }
+  }
   return {
     renderCards: function (ad, destination) {
+      removeArticle();
       destination.insertBefore(renderCard(ad), filtersContainer);
+      var popupClose = document.querySelector('.popup__close');
+      popupClose.addEventListener('click', removeArticle);
+      document.addEventListener('keydown', onPopupEscPress);
     }
   };
 })();

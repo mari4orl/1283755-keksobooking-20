@@ -3,8 +3,9 @@ window.pin = (function () {
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
   var pinTemplate = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
+    .content
+    .querySelector('.map__pin');
+  var map = document.querySelector('.map');
 
   function renderPin(ad) {
     var adElement = pinTemplate.cloneNode(true);
@@ -14,24 +15,24 @@ window.pin = (function () {
     adElement.querySelector('img').src = ad.author.avatar;
     adElement.querySelector('img').alt = ad.offer.title;
 
+    adElement.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Enter') {
+        window.card.renderCards(ad, map);
+      }
+    });
+
+    adElement.addEventListener('click', function () {
+      window.card.renderCards(ad, map);
+    });
     return adElement;
   }
-
 
   return {
     renderPins: function (adsArray, destination) {
       var fragment = document.createDocumentFragment();
 
-      function onPinClick(ad) {
-        pin.addEventListener('click', function () {
-          window.card.renderCards(ad, map)
-        });
-      }
-
       for (var i = 0; i < adsArray.length; i++) {
-        var pin = renderPin(adsArray[i]);
-        fragment.appendChild(pin);
-        onPinClick(adsArray[i]);
+        fragment.appendChild(renderPin(adsArray[i]));
       }
       destination.appendChild(fragment);
     }
