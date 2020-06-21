@@ -17,12 +17,12 @@ window.pin = (function () {
 
     adElement.addEventListener('keydown', function (evt) {
       if (evt.key === 'Enter') {
-        window.card.renderCards(ad, map);
+        window.card.renderCard(ad, map);
       }
     });
 
     adElement.addEventListener('click', function () {
-      window.card.renderCards(ad, map);
+      window.card.renderCard(ad, map);
     });
     return adElement;
   }

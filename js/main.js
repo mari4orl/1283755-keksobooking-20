@@ -36,11 +36,11 @@ function makeActive() {
   window.form.toggleFieldsetAvailability(false);
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  roomNumber.addEventListener('change', window.form.checkGuestRoomMatch);
-  capacity.addEventListener('change', window.form.checkGuestRoomMatch);
+  roomNumber.addEventListener('change', window.form.onGuestRoomChange);
+  capacity.addEventListener('change', window.form.onGuestRoomChange);
   type.addEventListener('change', window.form.onChangeMinPrice);
-  timeIn.addEventListener('change', window.form.onChangeTimeIn);
-  timeOut.addEventListener('change', window.form.onChangeTimeOut);
+  timeIn.addEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
+  timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
 
   window.backend.load(onSuccess, onError);
 

@@ -14,8 +14,6 @@ window.form = (function () {
 
   var type = document.querySelector('#type');
   var price = document.querySelector('#price');
-  var timeIn = document.querySelector('#timein');
-  var timeOut = document.querySelector('#timeout');
 
   if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
@@ -34,7 +32,7 @@ window.form = (function () {
       }
     },
 
-    checkGuestRoomMatch: function () {
+    onGuestRoomChange: function () {
       currentRooms = roomNumber.value;
       currentGuests = parseInt(capacity.value, 10);
       if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
@@ -65,20 +63,8 @@ window.form = (function () {
       }
     },
 
-    // onChangeTimeIn: function () {
-    //   if (timeIn.value != timeOut.value) {
-    //     timeIn.setCustomValidity('Время заезда и выезда должны совпадать');
-    //   } else {
-    //     timeIn.setCustomValidity('');
-    //   }
-    // },
-
-    onChangeTimeIn: function () {
-      timeOut.value = timeIn.value;
-    },
-
-    onChangeTimeOut: function () {
-      timeIn.value = timeOut.value;
+    onTimeChange: function (from, to) {
+      to.value = from.value;
     }
   };
 })();
