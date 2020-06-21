@@ -12,6 +12,9 @@ window.form = (function () {
   var currentRooms = roomNumber.value;
   var currentGuests = parseInt(capacity.value, 10);
 
+  var type = document.querySelector('#type');
+  var price = document.querySelector('#price');
+
   if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
   }
@@ -29,7 +32,7 @@ window.form = (function () {
       }
     },
 
-    checkGuestRoomMatch: function () {
+    onGuestRoomChange: function () {
       currentRooms = roomNumber.value;
       currentGuests = parseInt(capacity.value, 10);
       if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
@@ -37,6 +40,31 @@ window.form = (function () {
       } else {
         roomNumber.setCustomValidity('');
       }
+    },
+
+    onChangeMinPrice: function () {
+      switch (type.value) {
+        case 'flat':
+          price.min = '1000';
+          price.placeholder = '1000';
+          break;
+        case 'bungalo':
+          price.min = '0';
+          price.placeholder = '0';
+          break;
+        case 'house':
+          price.min = '5000';
+          price.placeholder = '5000';
+          break;
+        case 'palace':
+          price.min = '10000';
+          price.placeholder = '10000';
+          break;
+      }
+    },
+
+    onTimeChange: function (from, to) {
+      to.value = from.value;
     }
   };
 })();
