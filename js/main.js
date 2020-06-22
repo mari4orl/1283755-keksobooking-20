@@ -9,11 +9,28 @@ var capacity = document.querySelector('#capacity');
 var type = document.querySelector('#type');
 var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
+var reset = document.querySelector('.ad-form__reset');
 var inputAddress = document.querySelector('#address');
 var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
 var MAIN_PIN_SIZE = 62;
+var defaultCoordinateX = 570;
+var defaultCoordinateY = 375;
 
+function onResetClick() {
+  adForm.reset();
+  var pins = pinList.querySelectorAll('button[type="button"]');
+  pins.forEach(function (item) {
+    item.remove();
+  });
+  window.utils.removeArticle();
+  mapPinMain.style.top = defaultCoordinateY + 'px';
+  mapPinMain.style.left = defaultCoordinateX + 'px';
+
+  inputAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_SIZE / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_SIZE / 2);
+  mapPinMain.addEventListener('mousedown', onLeftBtnMouseClick);
+  mapPinMain.addEventListener('keydown', onEnterPress);
+}
 
 function onError(errorMessage) {
   var node = document.createElement('div');
@@ -31,9 +48,18 @@ function onSuccess(data) {
   window.pin.renderPins(data, pinList);
 }
 
-function makeActive() {
+function onSubmit(evt) {
+  evt.preventDefault();
+  window.backend.upload(new FormData(adForm), function () {
+    deactive();
+  });
+}
+adForm.addEventListener('submit', onSubmit);
 
+
+function makeActive() {
   window.form.toggleFieldsetAvailability(false);
+
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
   roomNumber.addEventListener('change', window.form.onGuestRoomChange);
@@ -46,6 +72,7 @@ function makeActive() {
 
   mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
   mapPinMain.removeEventListener('keydown', onEnterPress);
+  reset.addEventListener('click', onResetClick);
 }
 
 function onLeftBtnMouseClick(evt) {
@@ -58,6 +85,14 @@ function onEnterPress(evt) {
   if (evt.key === 'Enter') {
     makeActive();
   }
+}
+
+function deactive() {
+  onResetClick();
+  window.form.toggleFieldsetAvailability(true);
+
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
 }
 
 mapPinMain.addEventListener('mousedown', onLeftBtnMouseClick);

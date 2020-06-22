@@ -3,17 +3,11 @@ window.card = (function () {
   var cardTemplate = document.querySelector('#card').content;
   var filtersContainer = document.querySelector('.map__filters-container');
 
-  function removeArticle() {
-    var card = document.querySelector('article');
-    if (card) {
-      card.remove();
-    }
-  }
 
   function onPopupEscPress(evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      removeArticle();
+      window.utils.removeArticle();
     }
   }
   return {
@@ -65,14 +59,14 @@ window.card = (function () {
 
       cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
-      removeArticle();
+      window.utils.removeArticle();
 
       destination.insertBefore(cardElement, filtersContainer);
 
       var popupClose = document.querySelector('.popup__close');
 
       popupClose.addEventListener('click', function () {
-        removeArticle();
+        window.utils.removeArticle();
       });
       document.addEventListener('keydown', onPopupEscPress);
     }
