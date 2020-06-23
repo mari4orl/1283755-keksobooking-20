@@ -3,11 +3,17 @@ window.card = (function () {
   var cardTemplate = document.querySelector('#card').content;
   var filtersContainer = document.querySelector('.map__filters-container');
 
+  function closePopup() {
+    var card = document.querySelector('article');
+    if (card) {
+      card.remove();
+    }
+  }
 
   function onPopupEscPress(evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      window.utils.removeArticle();
+      closePopup();
     }
   }
   return {
@@ -59,16 +65,17 @@ window.card = (function () {
 
       cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
-      window.utils.removeArticle();
+      closePopup();
 
       destination.insertBefore(cardElement, filtersContainer);
 
       var popupClose = document.querySelector('.popup__close');
 
       popupClose.addEventListener('click', function () {
-        window.utils.removeArticle();
+        closePopup();
       });
       document.addEventListener('keydown', onPopupEscPress);
-    }
+    },
+    closePopup: closePopup()
   };
 })();

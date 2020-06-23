@@ -1,7 +1,6 @@
 'use strict';
 window.move = (function () {
   var mapPinMain = document.querySelector('.map__pin--main');
-  var PIN_ARROW_HEIGHT = 22;
   var MAIN_PIN_SIZE = 62;
   var MAX_LEFT = -MAIN_PIN_SIZE / 2;
   var MAX_RIGHT = 1200 - MAIN_PIN_SIZE / 2;
@@ -9,18 +8,14 @@ window.move = (function () {
   var MAX_BOTTOM = 546;
   var inputAddress = document.querySelector('#address');
 
-  function calculateCoordinates() {
-    inputAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_SIZE / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_SIZE + PIN_ARROW_HEIGHT);
-  }
-
   mapPinMain.addEventListener('keydown', function (evt) {
     evt.preventDefault();
-    calculateCoordinates();
+    inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), true);
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    calculateCoordinates();
+    inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), true);
 
     var startCoords = {
       x: evt.clientX,
@@ -44,7 +39,7 @@ window.move = (function () {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
       }
-      calculateCoordinates();
+      inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), true);
     };
 
     var onMouseUp = function (upEvt) {
