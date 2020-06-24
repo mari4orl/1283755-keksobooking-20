@@ -11,6 +11,7 @@ window.form = (function () {
   var capacity = document.querySelector('#capacity');
   var currentRooms = roomNumber.value;
   var currentGuests = parseInt(capacity.value, 10);
+  var adForm = document.querySelector('.ad-form');
 
   var type = document.querySelector('#type');
   var price = document.querySelector('#price');
@@ -65,6 +66,14 @@ window.form = (function () {
 
     onTimeChange: function (from, to) {
       to.value = from.value;
+    },
+
+    onSubmit: function (evt) {
+      evt.preventDefault();
+      window.backend.upload(new FormData(adForm), function () {
+        window.page.deactivate();
+        window.popups.openCloseSuccess();
+      }, window.popups.openCloseError);
     }
   };
 })();

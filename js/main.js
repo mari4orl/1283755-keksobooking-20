@@ -1,69 +1,17 @@
 'use strict';
 
-var map = document.querySelector('.map');
-var pinList = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
-var roomNumber = document.querySelector('#room_number');
-var capacity = document.querySelector('#capacity');
-var type = document.querySelector('#type');
-var timeIn = document.querySelector('#timein');
-var timeOut = document.querySelector('#timeout');
 var inputAddress = document.querySelector('#address');
 var mapPinMainX = parseInt(mapPinMain.style.left, 10);
 var mapPinMainY = parseInt(mapPinMain.style.top, 10);
-var MAIN_PIN_SIZE = 62;
 
+adForm.addEventListener('submit', window.form.onSubmit);
 
-function onError(errorMessage) {
-  var node = document.createElement('div');
-  node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
-  node.style.position = 'absolute';
-  node.style.left = 0;
-  node.style.right = 0;
-  node.style.fontSize = '30px';
-
-  node.textContent = errorMessage;
-  document.body.insertAdjacentElement('afterbegin', node);
-}
-
-function onSuccess(data) {
-  window.pin.renderPins(data, pinList);
-}
-
-function makeActive() {
-
-  window.form.toggleFieldsetAvailability(false);
-  map.classList.remove('map--faded');
-  adForm.classList.remove('ad-form--disabled');
-  roomNumber.addEventListener('change', window.form.onGuestRoomChange);
-  capacity.addEventListener('change', window.form.onGuestRoomChange);
-  type.addEventListener('change', window.form.onChangeMinPrice);
-  timeIn.addEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
-  timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
-
-  window.backend.load(onSuccess, onError);
-
-  mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
-  mapPinMain.removeEventListener('keydown', onEnterPress);
-}
-
-function onLeftBtnMouseClick(evt) {
-  if (evt.button === 0) {
-    makeActive();
-  }
-}
-
-function onEnterPress(evt) {
-  if (evt.key === 'Enter') {
-    makeActive();
-  }
-}
-
-mapPinMain.addEventListener('mousedown', onLeftBtnMouseClick);
-mapPinMain.addEventListener('keydown', onEnterPress);
+mapPinMain.addEventListener('mousedown', window.page.onLeftBtnMouseClick);
+mapPinMain.addEventListener('keydown', window.page.onEnterPress);
 
 window.form.toggleFieldsetAvailability(true);
 
-inputAddress.value = Math.round(mapPinMainX + MAIN_PIN_SIZE / 2) + ', ' + Math.round(mapPinMainY + MAIN_PIN_SIZE / 2);
+inputAddress.value = window.utils.getCoordinates(mapPinMainX, mapPinMainY, false);
 inputAddress.readOnly = true;

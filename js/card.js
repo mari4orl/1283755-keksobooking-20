@@ -3,7 +3,7 @@ window.card = (function () {
   var cardTemplate = document.querySelector('#card').content;
   var filtersContainer = document.querySelector('.map__filters-container');
 
-  function removeArticle() {
+  function closePopup() {
     var card = document.querySelector('article');
     if (card) {
       card.remove();
@@ -13,7 +13,7 @@ window.card = (function () {
   function onPopupEscPress(evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      removeArticle();
+      closePopup();
     }
   }
   return {
@@ -65,16 +65,17 @@ window.card = (function () {
 
       cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
-      removeArticle();
+      closePopup();
 
       destination.insertBefore(cardElement, filtersContainer);
 
       var popupClose = document.querySelector('.popup__close');
 
       popupClose.addEventListener('click', function () {
-        removeArticle();
+        closePopup();
       });
       document.addEventListener('keydown', onPopupEscPress);
-    }
+    },
+    closePopup: closePopup
   };
 })();
