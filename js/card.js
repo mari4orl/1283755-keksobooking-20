@@ -76,6 +76,6 @@ window.card = (function () {
       });
       document.addEventListener('keydown', onPopupEscPress);
     },
-    closePopup: closePopup()
+    closePopup: closePopup
   };
 })();

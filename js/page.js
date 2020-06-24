@@ -79,8 +79,8 @@ window.page = (function () {
       mapPinMain.removeEventListener('keydown', onEnterPress);
       reset.addEventListener('click', deactivate);
     },
-    onLeftBtnMouseClick: onLeftBtnMouseClick(),
-    onEnterPress: onEnterPress(),
-    deactivate: deactivate()
+    onLeftBtnMouseClick: onLeftBtnMouseClick,
+    onEnterPress: onEnterPress,
+    deactivate: deactivate
   };
 })();
