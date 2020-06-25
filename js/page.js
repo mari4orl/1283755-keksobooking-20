@@ -14,6 +14,8 @@ window.page = (function () {
   var defaultCoordinateX = 570;
   var defaultCoordinateY = 375;
 
+  var housingType = document.querySelector('#housing-type');
+  var offers = [];
   // function onError(errorMessage) {
   //   var node = document.createElement('div');
   //   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
@@ -27,20 +29,23 @@ window.page = (function () {
   // }
 
   function onSuccess(data) {
-    window.pin.renderPins(data, pinList);
+    offers = data;
+    window.pin.renderPins(offers, pinList);
+    window.form.toggleFieldsetAvailability(false);
   }
+
+  housingType.addEventListener('change', function () {
+    window.filters.filterHousing(offers);
+  });
 
   function deactivate() {
     adForm.reset();
-    var pins = pinList.querySelectorAll('button[type="button"]');
-    pins.forEach(function (item) {
-      item.remove();
-    });
+    window.pin.removePins();
     window.card.closePopup();
     mapPinMain.style.top = defaultCoordinateY + 'px';
     mapPinMain.style.left = defaultCoordinateX + 'px';
 
-    inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), false);
+    inputAddress.value = window.utils.getCoordinates(mapPinMain, false);
     mapPinMain.addEventListener('mousedown', onLeftBtnMouseClick);
     mapPinMain.addEventListener('keydown', onEnterPress);
     window.form.toggleFieldsetAvailability(true);
@@ -61,24 +66,25 @@ window.page = (function () {
     }
   }
 
+  function makeActive() {
+
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    roomNumber.addEventListener('change', window.form.onGuestRoomChange);
+    capacity.addEventListener('change', window.form.onGuestRoomChange);
+    type.addEventListener('change', window.form.onChangeMinPrice);
+    timeIn.addEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
+    timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
+
+    window.backend.load(onSuccess);
+
+    mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
+    mapPinMain.removeEventListener('keydown', onEnterPress);
+    reset.addEventListener('click', deactivate);
+  }
+
   return {
-    makeActive: function () {
-      window.form.toggleFieldsetAvailability(false);
-
-      map.classList.remove('map--faded');
-      adForm.classList.remove('ad-form--disabled');
-      roomNumber.addEventListener('change', window.form.onGuestRoomChange);
-      capacity.addEventListener('change', window.form.onGuestRoomChange);
-      type.addEventListener('change', window.form.onChangeMinPrice);
-      timeIn.addEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
-      timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
-
-      window.backend.load(onSuccess);
-
-      mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
-      mapPinMain.removeEventListener('keydown', onEnterPress);
-      reset.addEventListener('click', deactivate);
-    },
+    makeActive: makeActive,
     onLeftBtnMouseClick: onLeftBtnMouseClick,
     onEnterPress: onEnterPress,
     deactivate: deactivate

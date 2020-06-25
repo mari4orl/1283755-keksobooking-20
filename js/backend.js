@@ -3,15 +3,14 @@ window.backend = (function () {
   var URL = 'https://javascript.pages.academy/keksobooking/data';
   var URL_UPLOAD = 'https://javascript.pages.academy/keksobooking';
 
-  return {
-    load: function (onSuccess) {
-      var xhr = new XMLHttpRequest();
+  function load(onSuccess) {
+    var xhr = new XMLHttpRequest();
 
-      xhr.responseType = 'json';
+    xhr.responseType = 'json';
 
-      xhr.addEventListener('load', function () {
-        // if (xhr.status === 200) {
-        onSuccess(xhr.response);
+    xhr.addEventListener('load', function () {
+      // if (xhr.status === 200) {
+      onSuccess(xhr.response);
       //   } else {
       //     onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       //   }
@@ -19,36 +18,41 @@ window.backend = (function () {
       //
       // xhr.addEventListener('error', function () {
       //   onError('Произошла ошибка соединения');
-      });
-      //
-      // xhr.addEventListener('timeout', function () {
-      //   onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-      // });
-      //
-      // xhr.timeout = 10000; // 10s
+    });
+    //
+    // xhr.addEventListener('timeout', function () {
+    //   onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    // });
+    //
+    // xhr.timeout = 10000; // 10s
 
-      xhr.open('GET', URL);
-      xhr.send();
-    },
+    xhr.open('GET', URL);
+    xhr.send();
+  }
 
-    upload: function (data, onLoad, onErrorUpload) {
-      var xhr = new XMLHttpRequest();
+  function upload(data, onLoad, onErrorUpload) {
+    var xhr = new XMLHttpRequest();
 
-      xhr.responseType = 'json';
+    xhr.responseType = 'json';
 
-      xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
-          onLoad(xhr.response);
-        } else {
-          onErrorUpload();
-        }
-      });
-      xhr.addEventListener('error', function () {
+    xhr.addEventListener('load', function () {
+      if (xhr.status === 200) {
+        onLoad(xhr.response);
+      } else {
         onErrorUpload();
-      });
+      }
+    });
+    xhr.addEventListener('error', function () {
+      onErrorUpload();
+    });
 
-      xhr.open('POST', URL_UPLOAD);
-      xhr.send(data);
-    }
+    xhr.open('POST', URL_UPLOAD);
+    xhr.send(data);
+  }
+
+  return {
+    load: load,
+    upload: upload
+
   };
 })();

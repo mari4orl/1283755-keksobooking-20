@@ -10,12 +10,12 @@ window.move = (function () {
 
   mapPinMain.addEventListener('keydown', function (evt) {
     evt.preventDefault();
-    inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), true);
+    inputAddress.value = window.utils.getCoordinates(mapPinMain, true);
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), true);
+    inputAddress.value = window.utils.getCoordinates(mapPinMain, true);
 
     var startCoords = {
       x: evt.clientX,
@@ -39,7 +39,7 @@ window.move = (function () {
         mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
         mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
       }
-      inputAddress.value = window.utils.getCoordinates(parseInt(mapPinMain.style.left, 10), parseInt(mapPinMain.style.top, 10), true);
+      inputAddress.value = window.utils.getCoordinates(mapPinMain, true);
     };
 
     var onMouseUp = function (upEvt) {

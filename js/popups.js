@@ -4,50 +4,53 @@ window.popups = (function () {
   var errorTemplate = document.querySelector('#error').content;
   var main = document.querySelector('main');
 
-  return {
-    openCloseSuccess: function () {
-      var success = successTemplate.cloneNode(true);
-      main.appendChild(success);
+  function openCloseSuccess() {
+    var success = successTemplate.cloneNode(true);
+    main.appendChild(success);
 
-      success = document.querySelector('.success');
+    success = document.querySelector('.success');
 
-      function onSuccessClose() {
-        success.remove();
-        document.removeEventListener('click', onSuccessClose);
-        document.removeEventListener('keydown', onEscSuccessClose);
-      }
-
-      function onEscSuccessClose(evt) {
-        if (evt.key === 'Escape') {
-          onSuccessClose();
-        }
-      }
-
-      document.addEventListener('click', onSuccessClose);
-      document.addEventListener('keydown', onEscSuccessClose);
-    },
-
-    openCloseError: function () {
-      var error = errorTemplate.cloneNode(true);
-      main.appendChild(error);
-
-      error = document.querySelector('.error');
-      var errorButton = error.querySelector('.error__button');
-
-      function onErrorClose() {
-        error.remove();
-        document.removeEventListener('click', onErrorClose);
-        document.removeEventListener('keydown', onEscErrorClose);
-      }
-
-      function onEscErrorClose(evt) {
-        if (evt.key === 'Escape') {
-          onErrorClose();
-        }
-      }
-      document.addEventListener('keydown', onEscErrorClose);
-      document.addEventListener('click', onErrorClose);
-      errorButton.addEventListener('click', onErrorClose);
+    function onSuccessClose() {
+      success.remove();
+      document.removeEventListener('click', onSuccessClose);
+      document.removeEventListener('keydown', onEscSuccessClose);
     }
+
+    function onEscSuccessClose(evt) {
+      if (evt.key === 'Escape') {
+        onSuccessClose();
+      }
+    }
+
+    document.addEventListener('click', onSuccessClose);
+    document.addEventListener('keydown', onEscSuccessClose);
+  }
+
+  function openCloseError() {
+    var error = errorTemplate.cloneNode(true);
+    main.appendChild(error);
+
+    error = document.querySelector('.error');
+    var errorButton = error.querySelector('.error__button');
+
+    function onErrorClose() {
+      error.remove();
+      document.removeEventListener('click', onErrorClose);
+      document.removeEventListener('keydown', onEscErrorClose);
+    }
+
+    function onEscErrorClose(evt) {
+      if (evt.key === 'Escape') {
+        onErrorClose();
+      }
+    }
+    document.addEventListener('keydown', onEscErrorClose);
+    document.addEventListener('click', onErrorClose);
+    errorButton.addEventListener('click', onErrorClose);
+  }
+
+  return {
+    openCloseSuccess: openCloseSuccess,
+    openCloseError: openCloseError
   };
 })();
