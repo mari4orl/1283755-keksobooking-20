@@ -57,6 +57,7 @@ window.filters = (function () {
       filteredOffers = filteredOffers.filter(function (it) {
         return it.offer.features.indexOf(checkbox.value);
       });
+      housingFeatures.removeEventListener('click', onCheckboxClick);
     }
     housingFeatures.addEventListener('click', onCheckboxClick);
 
@@ -66,7 +67,7 @@ window.filters = (function () {
     window.pin.renderPins(filteredOffers, pinList);
   }
 
-  window.debounce.debounce(filterHousing);
+  // window.debounce.debounce(filterHousing);
 
   return {
     filterHousing: filterHousing
