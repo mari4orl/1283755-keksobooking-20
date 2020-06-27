@@ -13,8 +13,8 @@ window.page = (function () {
   var mapPinMain = document.querySelector('.map__pin--main');
   var defaultCoordinateX = 570;
   var defaultCoordinateY = 375;
+  var allFilters = document.querySelector('.map__filters');
 
-  var housingType = document.querySelector('#housing-type');
   var offers = [];
   // function onError(errorMessage) {
   //   var node = document.createElement('div');
@@ -34,9 +34,29 @@ window.page = (function () {
     window.form.toggleFieldsetAvailability(false);
   }
 
-  housingType.addEventListener('change', function () {
+  allFilters.addEventListener('change', function () {
     window.filters.filterHousing(offers);
   });
+
+  // var housingPrice = document.querySelector('#housing-price');
+  // var housingRooms = document.querySelector('#housing-rooms');
+  // var housingGuests = document.querySelector('#housing-guests');
+  // var housingFeatures = document.querySelector('#housing-features');
+  // housingType.addEventListener('change', function () {
+  //   window.filters.filterHousing(offers);
+  // });
+  // housingPrice.addEventListener('change', function () {
+  //   window.filters.filterHousing(offers);
+  // });
+  // housingRooms.addEventListener('change', function () {
+  //   window.filters.filterHousing(offers);
+  // });
+  // housingGuests.addEventListener('change', function () {
+  //   window.filters.filterHousing(offers);
+  // });
+  // housingFeatures.addEventListener('change', function () {
+  //   window.filters.filterHousing(offers);
+  // });
 
   function deactivate() {
     adForm.reset();
