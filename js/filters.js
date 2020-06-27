@@ -5,7 +5,7 @@ window.filters = (function () {
   var housingRooms = document.querySelector('#housing-rooms');
   var housingGuests = document.querySelector('#housing-guests');
   var housingFeatures = document.querySelector('#housing-features');
-
+  var featuresList = [];
   var pinList = document.querySelector('.map__pins');
 
   function filterHousing(offers) {
@@ -51,15 +51,21 @@ window.filters = (function () {
     }
 
     // FEATURES
-    function onCheckboxClick(evt) {
-      var checkbox = evt.target.closest('input');
+    function onCheckboxClick(filteredOffers, evt) {
+      var label = evt.target;
+      console.log(label);
+      var labelId = label.getAttribute('for');
+      console.log(labelId);
+      var checkbox = housingFeatures.querySelector('#' + labelId);
+      console.log(checkbox.value);
 
       filteredOffers = filteredOffers.filter(function (it) {
         return it.offer.features.indexOf(checkbox.value);
       });
       housingFeatures.removeEventListener('click', onCheckboxClick);
+      return filteredOffers
     }
-    housingFeatures.addEventListener('click', onCheckboxClick);
+    housingFeatures.addEventListener('click', onCheckboxClick.bind(null, filteredOffers));
 
 
     window.pin.removePins();
