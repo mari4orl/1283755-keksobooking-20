@@ -4,9 +4,10 @@ window.filters = (function () {
   var housingPrice = document.querySelector('#housing-price');
   var housingRooms = document.querySelector('#housing-rooms');
   var housingGuests = document.querySelector('#housing-guests');
-  var housingFeatures = document.querySelector('#housing-features');
-  var featuresList = [];
+  var featuresList = document.querySelectorAll('.map__checkbox');
   var pinList = document.querySelector('.map__pins');
+  var LOW_PRICE = 10000;
+  var HIGH_PRICE = 50000;
 
   function filterHousing(offers) {
     var filteredOffers = offers;
@@ -22,17 +23,17 @@ window.filters = (function () {
       switch (housingPrice.value) {
         case 'low':
           filteredOffers = filteredOffers.filter(function (it) {
-            return it.offer.price < 10000;
+            return it.offer.price < LOW_PRICE;
           });
           break;
         case 'middle':
           filteredOffers = filteredOffers.filter(function (it) {
-            return (it.offer.price >= 10000 && it.offer.price < 50000);
+            return (it.offer.price >= LOW_PRICE && it.offer.price < HIGH_PRICE);
           });
           break;
         case 'high':
           filteredOffers = filteredOffers.filter(function (it) {
-            return (it.offer.price >= 50000);
+            return (it.offer.price >= HIGH_PRICE);
           });
           break;
       }
@@ -51,22 +52,25 @@ window.filters = (function () {
     }
 
     // FEATURES
-    function onCheckboxClick(filteredOffers, evt) {
-      var label = evt.target;
-      console.log(label);
-      var labelId = label.getAttribute('for');
-      console.log(labelId);
-      var checkbox = housingFeatures.querySelector('#' + labelId);
-      console.log(checkbox.value);
+    var list = [];
+    featuresList.forEach(function(item){
+      if (item.checked) {
+        list.push(item);
+      }
+    })
 
-      filteredOffers = filteredOffers.filter(function (it) {
-        return it.offer.features.indexOf(checkbox.value);
-      });
-      housingFeatures.removeEventListener('click', onCheckboxClick);
+    function alll(offerItem, i){
+      list.forEach(function(feature) {
+        if (offerItem.offer.features.indexOf(feature.value) !== -1) {
+          filteredOffers = filteredOffers.push(filteredOffers[i]);
+        }
+      })
       return filteredOffers
     }
-    housingFeatures.addEventListener('click', onCheckboxClick.bind(null, filteredOffers));
 
+    filteredOffers.forEach(function(offerItem, i) {
+      alll(offerItem, i);
+    })
 
     window.pin.removePins();
     window.card.closePopup();
