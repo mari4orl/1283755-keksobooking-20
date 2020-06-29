@@ -35,28 +35,9 @@ window.page = (function () {
   }
 
   allFilters.addEventListener('change', function () {
-    window.filters.filterHousing(offers);
+    window.debounce.debounce(window.filters.filterHousing(offers));
+    // window.debounce.debounce(filterHousing);
   });
-
-  // var housingPrice = document.querySelector('#housing-price');
-  // var housingRooms = document.querySelector('#housing-rooms');
-  // var housingGuests = document.querySelector('#housing-guests');
-  // var housingFeatures = document.querySelector('#housing-features');
-  // housingType.addEventListener('change', function () {
-  //   window.filters.filterHousing(offers);
-  // });
-  // housingPrice.addEventListener('change', function () {
-  //   window.filters.filterHousing(offers);
-  // });
-  // housingRooms.addEventListener('change', function () {
-  //   window.filters.filterHousing(offers);
-  // });
-  // housingGuests.addEventListener('change', function () {
-  //   window.filters.filterHousing(offers);
-  // });
-  // housingFeatures.addEventListener('change', function () {
-  //   window.filters.filterHousing(offers);
-  // });
 
   function deactivate() {
     adForm.reset();
@@ -72,6 +53,13 @@ window.page = (function () {
 
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
+
+    roomNumber.removeEventListener('change', window.form.onGuestRoomChange);
+    capacity.removeEventListener('change', window.form.onGuestRoomChange);
+    type.removeEventListener('change', window.form.onChangeMinPrice);
+    timeIn.removeEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
+    timeOut.removeEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
+
   }
 
   function onLeftBtnMouseClick(evt) {
