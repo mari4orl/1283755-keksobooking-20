@@ -34,11 +34,15 @@ window.pin = (function () {
     var fragment = document.createDocumentFragment();
     if (adsArray.length > MAX_OFFER_NUMBER) {
       for (var i = 0; i < MAX_OFFER_NUMBER; i++) {
-        fragment.appendChild(renderPin(adsArray[i]));
+        if ('offer' in adsArray[i]) {
+          fragment.appendChild(renderPin(adsArray[i]));
+        }
       }
     } else {
       for (i = 0; i < adsArray.length; i++) {
-        fragment.appendChild(renderPin(adsArray[i]));
+        if ('offer' in adsArray[i]) {
+          fragment.appendChild(renderPin(adsArray[i]));
+        }
       }
     }
     destination.appendChild(fragment);

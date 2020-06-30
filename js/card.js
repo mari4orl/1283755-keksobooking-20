@@ -22,6 +22,8 @@ window.card = (function () {
     var popupCapacity = cardElement.querySelector('.popup__text--capacity');
     var popupTime = cardElement.querySelector('.popup__text--time');
     var popupType = cardElement.querySelector('.popup__type');
+    var popupFeatures = cardElement.querySelector('.popup__features');
+    var popupDescription = cardElement.querySelector('.popup__description');
     var photosList = cardElement.querySelector('.popup__photos');
     var photo = photosList.querySelector('img');
 
@@ -48,20 +50,34 @@ window.card = (function () {
 
     popupTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
+
     var featuresHTML = [];
-    for (var j = 0; j < ad.offer.features.length; j++) {
-      featuresHTML[j] = '<li class="popup__feature popup__feature--' + ad.offer.features[j] + '"></li>';
-    }
-    cardElement.querySelector('.popup__features').innerHTML = featuresHTML.join('');
 
-    cardElement.querySelector('.popup__description').textContent = ad.offer.description;
-
-    for (var i = 0; i < ad.offer.photos.length; i++) {
-      var photoElem = photo.cloneNode('true');
-      photoElem.src = ad.offer.photos[i];
-      photosList.appendChild(photoElem);
+    if (('features' in ad.offer) && (ad.offer.features.length !== 0)) {
+      for (var j = 0; j < ad.offer.features.length; j++) {
+        featuresHTML[j] = '<li class="popup__feature popup__feature--' + ad.offer.features[j] + '"></li>';
+      }
+      popupFeatures.innerHTML = featuresHTML.join('');
+    } else {
+      popupFeatures.remove();
     }
-    photo.remove();
+
+    if (ad.offer.description !== '""') {
+      popupDescription.textContent = ad.offer.description;
+    } else {
+      popupDescription.remove();
+    }
+
+    if (('photos' in ad.offer) && (ad.offer.photos.length !== 0)) {
+      for (var i = 0; i < ad.offer.photos.length; i++) {
+        var photoElem = photo.cloneNode('true');
+        photoElem.src = ad.offer.photos[i];
+        photosList.appendChild(photoElem);
+      }
+      photo.remove();
+    } else {
+      photosList.remove();
+    }
 
     cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
 
