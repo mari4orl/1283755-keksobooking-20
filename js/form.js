@@ -20,60 +20,70 @@ window.form = (function () {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
   }
 
-  return {
-    toggleFieldsetAvailability: function (disabledFlag) {
-      if (disabledFlag) {
-        for (var i = 0; i < allForms.length; i++) {
-          allForms[i].setAttribute('disabled', 'disabled');
-        }
-      } else {
-        for (var j = 0; j < allForms.length; j++) {
-          allForms[j].removeAttribute('disabled', 'disabled');
-        }
+  function toggleFieldsetAvailability(disabledFlag) {
+    if (disabledFlag) {
+      for (var i = 0; i < allForms.length; i++) {
+        allForms[i].setAttribute('disabled', 'disabled');
       }
-    },
-
-    onGuestRoomChange: function () {
-      currentRooms = roomNumber.value;
-      currentGuests = parseInt(capacity.value, 10);
-      if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
-        roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
-      } else {
-        roomNumber.setCustomValidity('');
+    } else {
+      for (var j = 0; j < allForms.length; j++) {
+        allForms[j].removeAttribute('disabled', 'disabled');
       }
-    },
-
-    onChangeMinPrice: function () {
-      switch (type.value) {
-        case 'flat':
-          price.min = '1000';
-          price.placeholder = '1000';
-          break;
-        case 'bungalo':
-          price.min = '0';
-          price.placeholder = '0';
-          break;
-        case 'house':
-          price.min = '5000';
-          price.placeholder = '5000';
-          break;
-        case 'palace':
-          price.min = '10000';
-          price.placeholder = '10000';
-          break;
-      }
-    },
-
-    onTimeChange: function (from, to) {
-      to.value = from.value;
-    },
-
-    onSubmit: function (evt) {
-      evt.preventDefault();
-      window.backend.upload(new FormData(adForm), function () {
-        window.page.deactivate();
-        window.popups.openCloseSuccess();
-      }, window.popups.openCloseError);
     }
+  }
+
+  function onGuestRoomChange() {
+    currentRooms = roomNumber.value;
+    currentGuests = parseInt(capacity.value, 10);
+    if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
+      roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
+    } else {
+      roomNumber.setCustomValidity('');
+    }
+  }
+
+  function onChangeMinPrice() {
+    switch (type.value) {
+      case 'flat':
+        price.min = '1000';
+        price.placeholder = '1000';
+        break;
+      case 'bungalo':
+        price.min = '0';
+        price.placeholder = '0';
+        break;
+      case 'house':
+        price.min = '5000';
+        price.placeholder = '5000';
+        break;
+      case 'palace':
+        price.min = '10000';
+        price.placeholder = '10000';
+        break;
+    }
+  }
+
+  function onTimeChange(from, to) {
+    to.value = from.value;
+  }
+
+  function onSubmit(evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(adForm), function () {
+      window.page.deactivate();
+      window.popups.openCloseSuccess();
+    }, window.popups.openCloseError);
+  }
+
+  return {
+    toggleFieldsetAvailability: toggleFieldsetAvailability,
+
+    onGuestRoomChange: onGuestRoomChange,
+
+    onChangeMinPrice: onChangeMinPrice,
+
+    onTimeChange: onTimeChange,
+
+    onSubmit: onSubmit
   };
 })();
