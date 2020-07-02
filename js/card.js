@@ -53,7 +53,7 @@ window.card = (function () {
 
     var featuresHTML = [];
 
-    if (('features' in ad.offer) && (ad.offer.features.length !== 0)) {
+    if (ad.offer.features) {
       for (var j = 0; j < ad.offer.features.length; j++) {
         featuresHTML[j] = '<li class="popup__feature popup__feature--' + ad.offer.features[j] + '"></li>';
       }
@@ -62,13 +62,13 @@ window.card = (function () {
       popupFeatures.remove();
     }
 
-    if (ad.offer.description !== '""') {
+    if (ad.offer.description !== '') {
       popupDescription.textContent = ad.offer.description;
     } else {
       popupDescription.remove();
     }
 
-    if (('photos' in ad.offer) && (ad.offer.photos.length !== 0)) {
+    if (ad.offer.photos) {
       for (var i = 0; i < ad.offer.photos.length; i++) {
         var photoElem = photo.cloneNode('true');
         photoElem.src = ad.offer.photos[i];

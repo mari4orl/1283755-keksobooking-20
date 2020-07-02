@@ -16,17 +16,6 @@ window.page = (function () {
   var allFilters = document.querySelector('.map__filters');
 
   var offers = [];
-  // function onError(errorMessage) {
-  //   var node = document.createElement('div');
-  //   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #E87362; width: 1200px; color: #ffffff';
-  //   node.style.position = 'absolute';
-  //   node.style.left = 0;
-  //   node.style.right = 0;
-  //   node.style.fontSize = '30px';
-  //
-  //   node.textContent = errorMessage;
-  //   document.body.insertAdjacentElement('afterbegin', node);
-  // }
 
   function onSuccess(data) {
     offers = data;
@@ -34,10 +23,11 @@ window.page = (function () {
     window.form.toggleFieldsetAvailability(false);
   }
 
-  allFilters.addEventListener('change', function () {
-    window.debounce.debounce(window.filters.filterHousing(offers));
-    // window.debounce.debounce(filterHousing);
-  });
+  function onFilterChange() {
+    window.filters.filterHousing(offers);
+  }
+
+  allFilters.addEventListener('change', window.debounce.debounce(onFilterChange));
 
   function deactivate() {
     adForm.reset();
