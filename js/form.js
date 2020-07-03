@@ -6,6 +6,8 @@ window.form = (function () {
     3: [1, 2, 3],
     100: [0],
   };
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
   var allForms = document.querySelectorAll('.ad-form fieldset, .map__filters .map__filter, .map__filters .map__features');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
@@ -15,6 +17,45 @@ window.form = (function () {
 
   var type = document.querySelector('#type');
   var price = document.querySelector('#price');
+
+  var avatarChooser = document.querySelector('.ad-form__field input[type=file]');
+  var avatarPreview = document.querySelector('.ad-form-header__preview img');
+
+  var housePhotoChooser = document.querySelector('.ad-form__upload input[type=file]');
+  var housePhotoPreview = document.querySelector('.ad-form__photo');
+
+  function onPictureUpload(chooser, preview) {
+    var file = chooser.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        if ('src' in preview) {
+          preview.src = reader.result;
+        } else {
+          var img = preview.querySelector('img');
+          if (img) {
+            img.remove();
+          }
+          img = document.createElement('img');
+          preview.appendChild(img);
+          img.width = '70';
+          img.height = '70';
+          img.src = reader.result;
+        }
+      });
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  avatarChooser.addEventListener('change', onPictureUpload.bind(null, avatarChooser, avatarPreview));
+  housePhotoChooser.addEventListener('change', onPictureUpload.bind(null, housePhotoChooser, housePhotoPreview));
 
   if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');

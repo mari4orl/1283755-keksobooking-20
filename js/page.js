@@ -27,7 +27,7 @@ window.page = (function () {
     window.filters.filterHousing(offers);
   }
 
-  allFilters.addEventListener('change', window.debounce.debounce(onFilterChange));
+  allFilters.addEventListener('change', window.utils.debounce(onFilterChange));
 
   function deactivate() {
     adForm.reset();
