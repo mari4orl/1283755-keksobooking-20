@@ -7,6 +7,8 @@ window.form = (function () {
     100: [0],
   };
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var URL_UPLOAD = 'https://javascript.pages.academy/keksobooking';
+
 
   var allForms = document.querySelectorAll('.ad-form fieldset, .map__filters .map__filter, .map__filters .map__features');
   var roomNumber = document.querySelector('#room_number');
@@ -18,18 +20,18 @@ window.form = (function () {
   var type = document.querySelector('#type');
   var price = document.querySelector('#price');
 
-  var avatarChooser = document.querySelector('.ad-form__field input[type=file]');
+  var avatarInput = document.querySelector('.ad-form__field input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
 
-  var housePhotoChooser = document.querySelector('.ad-form__upload input[type=file]');
+  var housePhotoInput = document.querySelector('.ad-form__upload input[type=file]');
   var housePhotoPreview = document.querySelector('.ad-form__photo');
 
-  function onPictureUpload(chooser, preview) {
-    var file = chooser.files[0];
+  function onPictureUpload(input, preview) {
+    var file = input.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
+    var matches = FILE_TYPES.some(function (fileType) {
+      return fileName.endsWith(fileType);
     });
 
     if (matches) {
@@ -54,8 +56,8 @@ window.form = (function () {
     }
   }
 
-  avatarChooser.addEventListener('change', onPictureUpload.bind(null, avatarChooser, avatarPreview));
-  housePhotoChooser.addEventListener('change', onPictureUpload.bind(null, housePhotoChooser, housePhotoPreview));
+  avatarInput.addEventListener('change', onPictureUpload.bind(null, avatarInput, avatarPreview));
+  housePhotoInput.addEventListener('change', onPictureUpload.bind(null, housePhotoInput, housePhotoPreview));
 
   if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
@@ -104,16 +106,18 @@ window.form = (function () {
     }
   }
 
-  function onTimeChange(from, to) {
-    to.value = from.value;
+  function onTimeChange(sourceElement, targetElement) {
+    targetElement.value = sourceElement.value;
+  }
+
+  function onDataUpload() {
+    window.page.deactivate();
+    window.popups.onDataLoadSuccess();
   }
 
   function onSubmit(evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(adForm), function () {
-      window.page.deactivate();
-      window.popups.openCloseSuccess();
-    }, window.popups.openCloseError);
+    window.backend.load(URL_UPLOAD, 'POST', onDataUpload, window.popups.onDataLoadError, new FormData(adForm));
   }
 
   return {

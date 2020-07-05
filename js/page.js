@@ -15,6 +15,8 @@ window.page = (function () {
   var defaultCoordinateY = 375;
   var allFilters = document.querySelector('.map__filters');
 
+  var URL = 'https://javascript.pages.academy/keksobooking/data';
+
   var offers = [];
 
   function onSuccess(data) {
@@ -74,7 +76,7 @@ window.page = (function () {
     timeIn.addEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
     timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
 
-    window.backend.load(onSuccess);
+    window.backend.load(URL, 'GET', onSuccess, window.popups.onDataLoadError);
 
     mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
     mapPinMain.removeEventListener('keydown', onEnterPress);

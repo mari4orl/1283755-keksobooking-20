@@ -4,7 +4,7 @@ window.popups = (function () {
   var errorTemplate = document.querySelector('#error').content;
   var main = document.querySelector('main');
 
-  function openCloseSuccess() {
+  function onDataLoadSuccess() {
     var success = successTemplate.cloneNode(true);
     main.appendChild(success);
 
@@ -26,7 +26,7 @@ window.popups = (function () {
     document.addEventListener('keydown', onEscSuccessClose);
   }
 
-  function openCloseError() {
+  function onDataLoadError() {
     var error = errorTemplate.cloneNode(true);
     main.appendChild(error);
 
@@ -50,7 +50,7 @@ window.popups = (function () {
   }
 
   return {
-    openCloseSuccess: openCloseSuccess,
-    openCloseError: openCloseError
+    onDataLoadSuccess: onDataLoadSuccess,
+    onDataLoadError: onDataLoadError
   };
 })();
