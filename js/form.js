@@ -8,21 +8,16 @@ window.form = (function () {
   };
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var URL_UPLOAD = 'https://javascript.pages.academy/keksobooking';
-
-
   var allForms = document.querySelectorAll('.ad-form fieldset, .map__filters .map__filter, .map__filters .map__features');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
   var currentRooms = roomNumber.value;
   var currentGuests = parseInt(capacity.value, 10);
   var adForm = document.querySelector('.ad-form');
-
   var type = document.querySelector('#type');
   var price = document.querySelector('#price');
-
   var avatarInput = document.querySelector('.ad-form__field input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
-
   var housePhotoInput = document.querySelector('.ad-form__upload input[type=file]');
   var housePhotoPreview = document.querySelector('.ad-form__photo');
 

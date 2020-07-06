@@ -9,28 +9,28 @@ window.filters = (function () {
   var LOW_PRICE = 10000;
   var HIGH_PRICE = 50000;
 
-  function onTypeFilter(it) {
-    return it.offer.type === housingType.value;
+  function onTypeFilter(ad) {
+    return ad.offer.type === housingType.value;
   }
 
-  function onLowPriceFilter(it) {
-    return it.offer.price < LOW_PRICE;
+  function onLowPriceFilter(ad) {
+    return ad.offer.price < LOW_PRICE;
   }
 
-  function onMiddlePriceFilter(it) {
-    return (it.offer.price >= LOW_PRICE && it.offer.price < HIGH_PRICE);
+  function onMiddlePriceFilter(ad) {
+    return (ad.offer.price >= LOW_PRICE && ad.offer.price < HIGH_PRICE);
   }
 
-  function onHighPriceFilter(it) {
-    return (it.offer.price >= HIGH_PRICE);
+  function onHighPriceFilter(ad) {
+    return (ad.offer.price >= HIGH_PRICE);
   }
 
-  function onRoomsFilter(it) {
-    return it.offer.rooms === parseInt(housingRooms.value, 10);
+  function onRoomsFilter(ad) {
+    return ad.offer.rooms === parseInt(housingRooms.value, 10);
   }
 
-  function onGuestsFilter(it) {
-    return it.offer.guests === parseInt(housingGuests.value, 10);
+  function onGuestsFilter(ad) {
+    return ad.offer.guests === parseInt(housingGuests.value, 10);
   }
 
   function filterHousing(offers) {
@@ -80,7 +80,7 @@ window.filters = (function () {
     filteredOffers = filteredOffers.filter(filterFeatures);
 
     window.pin.removePins();
-    window.card.closePopup();
+    window.card.closeCard();
     window.pin.renderPins(filteredOffers, pinList);
   }
 

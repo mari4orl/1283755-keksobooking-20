@@ -26,8 +26,12 @@ window.popups = (function () {
     document.addEventListener('keydown', onEscSuccessClose);
   }
 
-  function onDataLoadError() {
+  function onDataLoadError(errorMessage) {
     var error = errorTemplate.cloneNode(true);
+    if (errorMessage !== '') {
+      var p = error.querySelector('.error__message');
+      p.textContent = errorMessage;
+    }
     main.appendChild(error);
 
     error = document.querySelector('.error');
