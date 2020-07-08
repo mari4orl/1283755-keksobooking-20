@@ -1,5 +1,6 @@
 'use strict';
 window.backend = (function () {
+  var STATUS_CODE_OK = 200;
   function load(url, method, onLoadSuccess, onLoadError, data) {
     var errorMessage = '';
     var xhr = new XMLHttpRequest();
@@ -8,7 +9,7 @@ window.backend = (function () {
       errorMessage = 'Ошибка загрузки данных с сервера';
     }
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === STATUS_CODE_OK) {
         onLoadSuccess(xhr.response);
       } else {
         onLoadError(errorMessage);

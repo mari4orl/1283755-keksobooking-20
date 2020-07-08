@@ -27,8 +27,6 @@ window.page = (function () {
     window.filters.filterHousing(offers);
   }
 
-  allFilters.addEventListener('change', window.utils.debounce(onFilterChange));
-
   function deactivatePage() {
     adForm.reset();
     window.pin.removePins();
@@ -44,6 +42,7 @@ window.page = (function () {
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
 
+    adForm.removeEventListener('submit', window.form.onSubmit);
     roomNumber.removeEventListener('change', window.form.onGuestRoomChange);
     capacity.removeEventListener('change', window.form.onGuestRoomChange);
     type.removeEventListener('change', window.form.onChangeMinPrice);
@@ -65,7 +64,6 @@ window.page = (function () {
   }
 
   function activatePage() {
-
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     roomNumber.addEventListener('change', window.form.onGuestRoomChange);
@@ -75,11 +73,13 @@ window.page = (function () {
     timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
 
     window.backend.load(URL, 'GET', onSuccess, window.popups.onDataLoadError);
-
+    adForm.addEventListener('submit', window.form.onSubmit);
     mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
     mapPinMain.removeEventListener('keydown', onEnterPress);
     reset.addEventListener('click', deactivatePage);
   }
+
+  allFilters.addEventListener('change', window.utils.debounce(onFilterChange));
 
   return {
     activatePage: activatePage,

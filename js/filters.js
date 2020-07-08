@@ -4,7 +4,7 @@ window.filters = (function () {
   var housingPrice = document.querySelector('#housing-price');
   var housingRooms = document.querySelector('#housing-rooms');
   var housingGuests = document.querySelector('#housing-guests');
-  var allFeautures = document.querySelectorAll('.map__checkbox');
+  var allFeatures = document.querySelectorAll('.map__checkbox');
   var pinList = document.querySelector('.map__pins');
   var LOW_PRICE = 10000;
   var HIGH_PRICE = 50000;
@@ -65,7 +65,7 @@ window.filters = (function () {
 
     // FEATURES
     var featuresList = [];
-    allFeautures.forEach(function (item) {
+    allFeatures.forEach(function (item) {
       if (item.checked) {
         featuresList.push(item);
       }

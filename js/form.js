@@ -8,7 +8,7 @@ window.form = (function () {
   };
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var URL_UPLOAD = 'https://javascript.pages.academy/keksobooking';
-  var allForms = document.querySelectorAll('.ad-form fieldset, .map__filters .map__filter, .map__filters .map__features');
+  var formsFields = document.querySelectorAll('.ad-form fieldset, .map__filters .map__filter, .map__filters .map__features');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
   var currentRooms = roomNumber.value;
@@ -51,21 +51,18 @@ window.form = (function () {
     }
   }
 
-  avatarInput.addEventListener('change', onPictureUpload.bind(null, avatarInput, avatarPreview));
-  housePhotoInput.addEventListener('change', onPictureUpload.bind(null, housePhotoInput, housePhotoPreview));
-
   if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
   }
 
   function toggleFieldsetAvailability(disabledFlag) {
     if (disabledFlag) {
-      for (var i = 0; i < allForms.length; i++) {
-        allForms[i].setAttribute('disabled', 'disabled');
+      for (var i = 0; i < formsFields.length; i++) {
+        formsFields[i].setAttribute('disabled', 'disabled');
       }
     } else {
-      for (var j = 0; j < allForms.length; j++) {
-        allForms[j].removeAttribute('disabled', 'disabled');
+      for (var j = 0; j < formsFields.length; j++) {
+        formsFields[j].removeAttribute('disabled', 'disabled');
       }
     }
   }
@@ -106,7 +103,7 @@ window.form = (function () {
   }
 
   function onDataUpload() {
-    window.page.deactivate();
+    window.page.deactivatePage();
     window.popups.onDataLoadSuccess();
   }
 
@@ -114,6 +111,9 @@ window.form = (function () {
     evt.preventDefault();
     window.backend.load(URL_UPLOAD, 'POST', onDataUpload, window.popups.onDataLoadError, new FormData(adForm));
   }
+
+  avatarInput.addEventListener('change', onPictureUpload.bind(null, avatarInput, avatarPreview));
+  housePhotoInput.addEventListener('change', onPictureUpload.bind(null, housePhotoInput, housePhotoPreview));
 
   return {
     toggleFieldsetAvailability: toggleFieldsetAvailability,
