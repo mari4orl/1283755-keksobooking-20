@@ -4,7 +4,7 @@ window.popups = (function () {
   var errorTemplate = document.querySelector('#error').content;
   var main = document.querySelector('main');
 
-  function openCloseSuccess() {
+  function onDataLoadSuccess() {
     var success = successTemplate.cloneNode(true);
     main.appendChild(success);
 
@@ -26,8 +26,12 @@ window.popups = (function () {
     document.addEventListener('keydown', onEscSuccessClose);
   }
 
-  function openCloseError() {
+  function onDataLoadError(errorMessage) {
     var error = errorTemplate.cloneNode(true);
+    if (errorMessage !== '') {
+      var p = error.querySelector('.error__message');
+      p.textContent = errorMessage;
+    }
     main.appendChild(error);
 
     error = document.querySelector('.error');
@@ -50,7 +54,7 @@ window.popups = (function () {
   }
 
   return {
-    openCloseSuccess: openCloseSuccess,
-    openCloseError: openCloseError
+    onDataLoadSuccess: onDataLoadSuccess,
+    onDataLoadError: onDataLoadError
   };
 })();

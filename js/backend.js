@@ -1,44 +1,34 @@
 'use strict';
 window.backend = (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking/data';
-  var URL_UPLOAD = 'https://javascript.pages.academy/keksobooking';
-
-  function load(onSuccess) {
+  var STATUS_CODE_OK = 200;
+  function load(url, method, onLoadSuccess, onLoadError, data) {
+    var errorMessage = '';
     var xhr = new XMLHttpRequest();
-
     xhr.responseType = 'json';
-
+    if (method === 'GET') {
+      errorMessage = 'Ошибка загрузки данных с сервера';
+    }
     xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
-    });
-
-    xhr.open('GET', URL);
-    xhr.send();
-  }
-
-  function upload(data, onLoad, onErrorUpload) {
-    var xhr = new XMLHttpRequest();
-
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
-        onLoad(xhr.response);
+      if (xhr.status === STATUS_CODE_OK) {
+        onLoadSuccess(xhr.response);
       } else {
-        onErrorUpload();
+        onLoadError(errorMessage);
       }
     });
+
     xhr.addEventListener('error', function () {
-      onErrorUpload();
+      onLoadError(errorMessage);
     });
 
-    xhr.open('POST', URL_UPLOAD);
-    xhr.send(data);
+    xhr.open(method, url);
+    if (data) {
+      xhr.send(data);
+    } else {
+      xhr.send();
+    }
   }
 
   return {
-    load: load,
-    upload: upload
-
+    load: load
   };
 })();

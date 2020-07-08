@@ -14,7 +14,7 @@ window.page = (function () {
   var defaultCoordinateX = 570;
   var defaultCoordinateY = 375;
   var allFilters = document.querySelector('.map__filters');
-
+  var URL = 'https://javascript.pages.academy/keksobooking/data';
   var offers = [];
 
   function onSuccess(data) {
@@ -27,12 +27,10 @@ window.page = (function () {
     window.filters.filterHousing(offers);
   }
 
-  allFilters.addEventListener('change', window.debounce.debounce(onFilterChange));
-
-  function deactivate() {
+  function deactivatePage() {
     adForm.reset();
     window.pin.removePins();
-    window.card.closePopup();
+    window.card.closeCard();
     mapPinMain.style.top = defaultCoordinateY + 'px';
     mapPinMain.style.left = defaultCoordinateX + 'px';
 
@@ -44,6 +42,7 @@ window.page = (function () {
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
 
+    adForm.removeEventListener('submit', window.form.onSubmit);
     roomNumber.removeEventListener('change', window.form.onGuestRoomChange);
     capacity.removeEventListener('change', window.form.onGuestRoomChange);
     type.removeEventListener('change', window.form.onChangeMinPrice);
@@ -54,18 +53,17 @@ window.page = (function () {
 
   function onLeftBtnMouseClick(evt) {
     if (evt.button === 0) {
-      window.page.makeActive();
+      window.page.activatePage();
     }
   }
 
   function onEnterPress(evt) {
     if (evt.key === 'Enter') {
-      window.page.makeActive();
+      window.page.activatePage();
     }
   }
 
-  function makeActive() {
-
+  function activatePage() {
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     roomNumber.addEventListener('change', window.form.onGuestRoomChange);
@@ -74,17 +72,19 @@ window.page = (function () {
     timeIn.addEventListener('change', window.form.onTimeChange.bind(null, timeIn, timeOut));
     timeOut.addEventListener('change', window.form.onTimeChange.bind(null, timeOut, timeIn));
 
-    window.backend.load(onSuccess);
-
+    window.backend.load(URL, 'GET', onSuccess, window.popups.onDataLoadError);
+    adForm.addEventListener('submit', window.form.onSubmit);
     mapPinMain.removeEventListener('mousedown', onLeftBtnMouseClick);
     mapPinMain.removeEventListener('keydown', onEnterPress);
-    reset.addEventListener('click', deactivate);
+    reset.addEventListener('click', deactivatePage);
   }
 
+  allFilters.addEventListener('change', window.utils.debounce(onFilterChange));
+
   return {
-    makeActive: makeActive,
+    activatePage: activatePage,
     onLeftBtnMouseClick: onLeftBtnMouseClick,
     onEnterPress: onEnterPress,
-    deactivate: deactivate
+    deactivatePage: deactivatePage
   };
 })();

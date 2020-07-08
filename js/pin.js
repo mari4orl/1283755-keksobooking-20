@@ -9,7 +9,6 @@ window.pin = (function () {
   var map = document.querySelector('.map');
   var pinList = document.querySelector('.map__pins');
 
-
   function renderPin(ad) {
     var adElement = pinTemplate.cloneNode(true);
 
