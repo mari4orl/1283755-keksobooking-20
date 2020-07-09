@@ -20,11 +20,13 @@ window.pin = (function () {
     adElement.addEventListener('keydown', function (evt) {
       if (evt.key === 'Enter') {
         window.card.renderCard(ad, map);
+        adElement.classList.add('map__pin--active');
       }
     });
 
     adElement.addEventListener('click', function () {
       window.card.renderCard(ad, map);
+      adElement.classList.add('map__pin--active');
     });
     return adElement;
   }
