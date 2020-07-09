@@ -29,8 +29,9 @@ window.page = (function () {
 
   function deactivatePage() {
     adForm.reset();
-    window.pin.removePins();
+    allFilters.reset();
     window.card.closeCard();
+    window.pin.removePins();
     mapPinMain.style.top = defaultCoordinateY + 'px';
     mapPinMain.style.left = defaultCoordinateX + 'px';
 

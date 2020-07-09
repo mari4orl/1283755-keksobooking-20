@@ -79,8 +79,8 @@ window.filters = (function () {
 
     filteredOffers = filteredOffers.filter(filterFeatures);
 
-    window.pin.removePins();
     window.card.closeCard();
+    window.pin.removePins();
     window.pin.renderPins(filteredOffers, pinList);
   }
 

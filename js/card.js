@@ -7,6 +7,7 @@ window.card = (function () {
     var card = document.querySelector('article');
     if (card) {
       card.remove();
+      document.querySelector('.map__pin--active').classList.remove('map__pin--active');
     }
   }
 
