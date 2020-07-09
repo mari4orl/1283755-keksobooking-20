@@ -51,6 +51,15 @@ window.form = (function () {
     }
   }
 
+  function resetPictureInput(preview, isAvatar) {
+    if (isAvatar) {
+      preview.src = 'img/muffin-grey.svg';
+    } else {
+      var img = preview.querySelector('img');
+      img.src = '';
+    }
+  }
+
   if (guestsRoomsMap[currentRooms].indexOf(currentGuests) === -1) {
     roomNumber.setCustomValidity('Выберите другое количество комнат или гостей');
   }
@@ -62,7 +71,7 @@ window.form = (function () {
       }
     } else {
       for (var j = 0; j < formsFields.length; j++) {
-        formsFields[j].removeAttribute('disabled', 'disabled');
+        formsFields[j].removeAttribute('disabled');
       }
     }
   }
@@ -124,6 +133,8 @@ window.form = (function () {
 
     onTimeChange: onTimeChange,
 
-    onSubmit: onSubmit
+    onSubmit: onSubmit,
+
+    resetPictureInput: resetPictureInput
   };
 })();

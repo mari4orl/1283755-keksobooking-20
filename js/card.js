@@ -38,13 +38,17 @@ window.card = (function () {
   }
 
   function renderFeatures(offerFeatures, popupFeatures) {
-    var featuresHTML = [];
+    var fragment = document.createDocumentFragment();
 
     if (offerFeatures) {
+      popupFeatures.innerHTML = '';
       for (var j = 0; j < offerFeatures.length; j++) {
-        featuresHTML[j] = '<li class="popup__feature popup__feature--' + offerFeatures[j] + '"></li>';
+        var featureElement = document.createElement('li');
+        featureElement.classList.add('popup__feature');
+        featureElement.classList.add('popup__feature--' + offerFeatures[j] + '');
+        fragment.appendChild(featureElement);
       }
-      popupFeatures.innerHTML = featuresHTML.join('');
+      popupFeatures.appendChild(fragment);
     } else {
       popupFeatures.remove();
     }

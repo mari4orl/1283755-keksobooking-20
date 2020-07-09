@@ -14,6 +14,8 @@ window.page = (function () {
   var defaultCoordinateX = 570;
   var defaultCoordinateY = 375;
   var allFilters = document.querySelector('.map__filters');
+  var avatarPreview = document.querySelector('.ad-form-header__preview img');
+  var housePhotoPreview = document.querySelector('.ad-form__photo');
   var URL = 'https://javascript.pages.academy/keksobooking/data';
   var offers = [];
 
@@ -30,6 +32,8 @@ window.page = (function () {
   function deactivatePage() {
     adForm.reset();
     allFilters.reset();
+    window.form.resetPictureInput(avatarPreview, true);
+    window.form.resetPictureInput(housePhotoPreview, false);
     window.card.closeCard();
     window.pin.removePins();
     mapPinMain.style.top = defaultCoordinateY + 'px';
